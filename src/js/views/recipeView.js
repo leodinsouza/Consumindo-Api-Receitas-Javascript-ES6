@@ -78,7 +78,7 @@ export const renderRecipe = (recipe, isLiked) => {
                     <svg class="search__icon">
                         <use href="img/icons.svg#icon-shopping-cart"></use>
                     </svg>
-                    <span>Add to shopping list</span>
+                    <span>Adicionar à Lista</span>
                 </button>
             </div>
             <div class="recipe__directions">
