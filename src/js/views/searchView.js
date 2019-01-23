@@ -4,12 +4,20 @@ export const getInput = () => elements.searchInput.value;
 
 export const clearInput = () => {
     elements.searchInput.value = '';
-}
+};
 
 export const clearResults = () => {
     elements.searchResultList.innerHTML = '';
     elements.searchResPages.innerHTML = '';
-}
+};
+
+export const highLightSelected = id => {
+    const resultsArr = Array.from(document.querySelectorAll('.results__link'));
+    resultsArr.forEach(el => {
+        el.classList.remove('results__link--active');
+    });
+    document.querySelector(`.results__link[href="#${id}"]`).classList.add('results__link--active');
+};
 
 /**
  *  'Pasta with tomato and spinach'
@@ -19,7 +27,7 @@ export const clearResults = () => {
  * acc:15 / acc+cur.length = 18 / newTitle = ['Pasta', 'with', 'tomato']
  * acc:18 / acc+cur.length = 25 / newTitle = ['Pasta', 'with', 'tomato']
  */
-const limitRecipeTitle = (title, limit = 17) => {
+export const limitRecipeTitle = (title, limit = 17) => {
     const newTitle = [];
     if (title.length > limit) {
         //divide o título

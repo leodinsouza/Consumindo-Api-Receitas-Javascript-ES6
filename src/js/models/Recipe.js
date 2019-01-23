@@ -33,6 +33,8 @@ export default class Recipe {
     parseIngredients() {
         const unitsLong = ['tablespoon', 'tablespoons', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds'];
         const unitsShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
+        //adicioar mais unidades usando destructuring. Usando os três pontos para desestruturar o unitShort.
+        const units = [...unitsShort, 'kg', 'g'];
         const newIngredients = this.ingredients.map(el => {
             // 1) unidades padronizadas - as unidades devem ser todas iguais
             let ingredient = el.toLowerCase();
@@ -50,7 +52,7 @@ export default class Recipe {
             * são as unidades. Includes é um novo método de array, ele retorna true se o elemento que estamos passando está no array e falso
             * caso não esteja. Isto é como um loop
             */
-            const unitIndex = arrIng.findIndex(el2 => unitsShort.includes(el2));
+            const unitIndex = arrIng.findIndex(el2 => units.includes(el2));
             //objeto de ingredientes a ser retornado
             let objIng;
             if (unitIndex > -1) {
@@ -59,12 +61,14 @@ export default class Recipe {
                 // 4cups, arrCount será [4]
                 const arrCount = arrIng.slice(0, unitIndex);
                 let count;
+                //Erro ao acessar com if abaxo o produto: JELLO COOKIES (CRISP PASTELS)
                 if (arrCount.length === 1) {
                     count = eval(arrIng[0].replace('-', '+'));
                 } else {
                     //Ex. 4 1/2 cups, arrCount será [4, 1/2] --> eval('4+1/2') --> 4.5
                     count = eval(arrIng.slice(0, unitIndex).join('+'));
                 }
+
                 objIng = {
                     count,
                     unit: arrIng[unitIndex],
@@ -92,5 +96,17 @@ export default class Recipe {
 
         });
         this.ingredients = newIngredients;
+    }
+    updateServings(type) {
+        //Servings
+        const newServings = type === 'dec' ? this.servings - 1 : this.servings + 1;
+
+        //Ingredients
+        this.ingredients.forEach(ing => {
+            ing.count *= (newServings / this.servings);
+        });
+
+        this.servings = newServings;
+        console.log(`O tipo passado foi ${type} e o numero de porções é de ${this.servings}`);
     }
 }
